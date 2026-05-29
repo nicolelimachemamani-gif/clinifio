@@ -14,71 +14,71 @@ st.set_page_config(page_title="Clinifio — Inferencia de Riesgo", page_icon="�
 
 # Estilos CSS Avanzados para entorno clínico
 st.markdown("""
-    <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
 
-    html, body, [class*="css"] { font-family: 'Inter', sans-serif; }
+html, body, [class*="css"] { font-family: 'Inter', sans-serif; }
 
-    .main-title { font-size:2.4em; font-weight:700; color:#1a5276; text-align:center; }
+.main-title { font-size:2.4em; font-weight:700; color:#1a5276; text-align:center; }
 
-    .alert-box { padding: 15px; border-radius: 8px; margin: 15px 0; font-weight: bold; text-align: center; }
-    .alert-danger  { background-color: #fadbd8; color: #78281f; border: 1px solid #f5b7b1; font-size:1.2em; }
-    .alert-success { background-color: #d4efdf; color: #145a32; border: 1px solid #abebc6; font-size:1.2em; }
-    .alert-info    { background-color: #d6eaf8; color: #1a5276; border: 1px solid #7fb3d3; font-size:1.0em; }
-    .alert-warning { background-color: #fef9e7; color: #7d6608; border: 1px solid #f7dc6f; font-size:1.0em; }
+.alert-box { padding: 15px; border-radius: 8px; margin: 15px 0; font-weight: bold; text-align: center; }
+.alert-danger  { background-color: #fadbd8; color: #78281f; border: 1px solid #f5b7b1; font-size:1.2em; }
+.alert-success { background-color: #d4efdf; color: #145a32; border: 1px solid #abebc6; font-size:1.2em; }
+.alert-info    { background-color: #d6eaf8; color: #1a5276; border: 1px solid #7fb3d3; font-size:1.0em; }
+.alert-warning { background-color: #fef9e7; color: #7d6608; border: 1px solid #f7dc6f; font-size:1.0em; }
 
-    /* Barra de progreso del ciclo de mantenimiento */
-    .cycle-bar-bg {
-        background: #e8ecef;
-        border-radius: 8px;
-        height: 12px;
-        width: 100%;
-        margin-top: 4px;
-        overflow: hidden;
-    }
-    .cycle-bar-fill {
-        height: 12px;
-        border-radius: 8px;
-        background: linear-gradient(90deg, #2ecc71, #1abc9c);
-        transition: width 0.4s ease;
-    }
-    .cycle-bar-fill-training {
-        height: 12px;
-        border-radius: 8px;
-        background: linear-gradient(90deg, #e67e22, #e74c3c);
-        animation: pulse-bar 1.5s infinite alternate;
-    }
-    @keyframes pulse-bar {
-        from { opacity: 0.7; }
-        to   { opacity: 1.0; }
-    }
+/* Barra de progreso del ciclo de mantenimiento */
+.cycle-bar-bg {
+    background: #e8ecef;
+    border-radius: 8px;
+    height: 12px;
+    width: 100%;
+    margin-top: 4px;
+    overflow: hidden;
+}
+.cycle-bar-fill {
+    height: 12px;
+    border-radius: 8px;
+    background: linear-gradient(90deg, #2ecc71, #1abc9c);
+    transition: width 0.4s ease;
+}
+.cycle-bar-fill-training {
+    height: 12px;
+    border-radius: 8px;
+    background: linear-gradient(90deg, #e67e22, #e74c3c);
+    animation: pulse-bar 1.5s infinite alternate;
+}
+@keyframes pulse-bar {
+    from { opacity: 0.7; }
+    to   { opacity: 1.0; }
+}
 
-    .badge-training {
-        display: inline-block;
-        background: linear-gradient(90deg, #e67e22, #e74c3c);
-        color: white;
-        border-radius: 20px;
-        padding: 4px 12px;
-        font-size: 0.82em;
-        font-weight: 600;
-        animation: pulse-badge 1.2s infinite alternate;
-        margin-left: 6px;
-    }
-    @keyframes pulse-badge {
-        from { box-shadow: 0 0 4px #e67e22; }
-        to   { box-shadow: 0 0 14px #e74c3c; }
-    }
+.badge-training {
+    display: inline-block;
+    background: linear-gradient(90deg, #e67e22, #e74c3c);
+    color: white;
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 0.82em;
+    font-weight: 600;
+    animation: pulse-badge 1.2s infinite alternate;
+    margin-left: 6px;
+}
+@keyframes pulse-badge {
+    from { box-shadow: 0 0 4px #e67e22; }
+    to   { box-shadow: 0 0 14px #e74c3c; }
+}
 
-    .badge-idle {
-        display: inline-block;
-        background: linear-gradient(90deg, #27ae60, #2ecc71);
-        color: white;
-        border-radius: 20px;
-        padding: 4px 12px;
-        font-size: 0.82em;
-        font-weight: 600;
-    }
-    </style>
+.badge-idle {
+    display: inline-block;
+    background: linear-gradient(90deg, #27ae60, #2ecc71);
+    color: white;
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 0.82em;
+    font-weight: 600;
+}
+</style>
 """, unsafe_allow_html=True)
 
 st.markdown("<div class='main-title'>🏥 Sistema de Cribado Clínico Clinifio</div>", unsafe_allow_html=True)
