@@ -38,4 +38,4 @@ def test_predict_endpoint():
     result = response.json()
     assert 'diagnostico' in result
     assert 'probabilidad' in result
-    assert 'fecha' in result
+    assert 'fecha_servidor' in result
