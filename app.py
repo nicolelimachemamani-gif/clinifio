@@ -10,79 +10,132 @@ import time
 # En desarrollo local, apunta a localhost.
 API_URL = os.environ.get("API_URL", "http://localhost:8000").rstrip("/")
 
-st.set_page_config(page_title="Clinifio — Inferencia de Riesgo", page_icon="🩺", layout="centered")
+st.set_page_config(page_title="Clinifio", layout="centered")
 
-# Estilos CSS Avanzados para entorno clínico
+# Estilos CSS Avanzados Minimalista Pastel
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap');
 
-html, body, [class*="css"] { font-family: 'Inter', sans-serif; }
+/* Global settings */
+html, body, [class*="css"] { 
+    font-family: 'Inter', sans-serif;
+    color: #657166;
+}
 
-.main-title { font-size:2.4em; font-weight:700; color:#1a5276; text-align:center; }
+/* Background Gradient (stApp) */
+[data-testid="stAppViewContainer"] {
+    background: linear-gradient(135deg, #FDE8D3 0%, #DAEBE3 100%);
+}
 
-.alert-box { padding: 15px; border-radius: 8px; margin: 15px 0; font-weight: bold; text-align: center; }
-.alert-danger  { background-color: #fadbd8; color: #78281f; border: 1px solid #f5b7b1; font-size:1.2em; }
-.alert-success { background-color: #d4efdf; color: #145a32; border: 1px solid #abebc6; font-size:1.2em; }
-.alert-info    { background-color: #d6eaf8; color: #1a5276; border: 1px solid #7fb3d3; font-size:1.0em; }
-.alert-warning { background-color: #fef9e7; color: #7d6608; border: 1px solid #f7dc6f; font-size:1.0em; }
+/* Sidebar Gradient */
+[data-testid="stSidebar"] {
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(10px);
+    border-right: 1px solid rgba(255, 255, 255, 0.3);
+}
 
-/* Barra de progreso del ciclo de mantenimiento */
-.cycle-bar-bg {
-    background: #e8ecef;
+/* Main Container / Glassmorphism Cards */
+.main-title { 
+    font-size: 2.5em; 
+    font-weight: 600; 
+    color: #657166; 
+    text-align: center;
+    margin-bottom: 20px;
+    letter-spacing: -0.5px;
+}
+
+.alert-box { 
+    padding: 16px 20px; 
+    border-radius: 12px; 
+    margin: 20px 0; 
+    font-weight: 400; 
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    backdrop-filter: blur(5px);
+}
+.alert-danger  { background-color: rgba(243, 195, 178, 0.8); color: #657166; border: 1px solid rgba(255,255,255,0.5); }
+.alert-success { background-color: rgba(207, 214, 196, 0.8); color: #657166; border: 1px solid rgba(255,255,255,0.5); }
+.alert-info    { background-color: rgba(153, 205, 216, 0.8); color: #657166; border: 1px solid rgba(255,255,255,0.5); }
+.alert-warning { background-color: rgba(253, 232, 211, 0.8); color: #657166; border: 1px solid rgba(255,255,255,0.5); }
+
+/* Buttons */
+.stButton > button {
+    background-color: #99CDD8;
+    color: white;
+    border: none;
     border-radius: 8px;
-    height: 12px;
+    padding: 10px 24px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(153, 205, 216, 0.3);
+}
+.stButton > button:hover {
+    background-color: #CFD6C4;
+    box-shadow: 0 6px 15px rgba(207, 214, 196, 0.4);
+    transform: translateY(-1px);
+    color: #657166;
+}
+
+/* Inputs and Selectboxes */
+.stTextInput > div > div > input, .stSelectbox > div > div > div {
+    border-radius: 8px;
+    border: 1px solid rgba(101, 113, 102, 0.2);
+    background-color: rgba(255, 255, 255, 0.7);
+}
+
+/* Cycle Bar */
+.cycle-bar-bg {
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 8px;
+    height: 8px;
     width: 100%;
-    margin-top: 4px;
+    margin-top: 8px;
     overflow: hidden;
 }
 .cycle-bar-fill {
-    height: 12px;
+    height: 8px;
     border-radius: 8px;
-    background: linear-gradient(90deg, #2ecc71, #1abc9c);
+    background: #99CDD8;
     transition: width 0.4s ease;
 }
 .cycle-bar-fill-training {
-    height: 12px;
+    height: 8px;
     border-radius: 8px;
-    background: linear-gradient(90deg, #e67e22, #e74c3c);
+    background: #F3C3B2;
     animation: pulse-bar 1.5s infinite alternate;
 }
 @keyframes pulse-bar {
-    from { opacity: 0.7; }
+    from { opacity: 0.6; }
     to   { opacity: 1.0; }
 }
 
 .badge-training {
     display: inline-block;
-    background: linear-gradient(90deg, #e67e22, #e74c3c);
-    color: white;
-    border-radius: 20px;
+    background: #F3C3B2;
+    color: #657166;
+    border-radius: 12px;
     padding: 4px 12px;
     font-size: 0.82em;
     font-weight: 600;
-    animation: pulse-badge 1.2s infinite alternate;
     margin-left: 6px;
+    box-shadow: 0 2px 5px rgba(243, 195, 178, 0.4);
 }
-@keyframes pulse-badge {
-    from { box-shadow: 0 0 4px #e67e22; }
-    to   { box-shadow: 0 0 14px #e74c3c; }
-}
-
 .badge-idle {
     display: inline-block;
-    background: linear-gradient(90deg, #27ae60, #2ecc71);
-    color: white;
-    border-radius: 20px;
+    background: #CFD6C4;
+    color: #657166;
+    border-radius: 12px;
     padding: 4px 12px;
     font-size: 0.82em;
     font-weight: 600;
+    box-shadow: 0 2px 5px rgba(207, 214, 196, 0.4);
 }
 </style>
 """, unsafe_allow_html=True)
 
-st.markdown("<div class='main-title'>🏥 Sistema de Cribado Clínico Clinifio</div>", unsafe_allow_html=True)
-st.write("Aplicación Web Médica Conectada en Localhost. Grupo: **Jhon Clinton, Garen y Fiorela**.")
+st.markdown("<div class='main-title'>Clinifio 2.0</div>", unsafe_allow_html=True)
+st.write("Aplicación Web Médica. Grupo: **Jhon Clinton, Garen y Fiorela**.")
 
 # Carga dinámica de metadatos
 with open('features.json', 'r', encoding='utf-8') as f:
@@ -92,16 +145,9 @@ with open('metrics.json', 'r', encoding='utf-8') as f:
     metrics = json.load(f)
 
 # ─────────────────────────────────────────────
-# PANEL LATERAL: Tablero de Control MLOps
+# PANEL LATERAL: Ciclo de Mantenimiento Continuo
 # ─────────────────────────────────────────────
-st.sidebar.markdown("### 📊 Tablero de Control TI (MLOps)")
-st.sidebar.metric("Modelo Operativo",        metrics.get("nombre_modelo_ganador", "XGBoost"))
-st.sidebar.metric("Área bajo la curva (AUC)", f"{metrics.get('auc_roc', 0.85)*100:.2f}%")
-st.sidebar.metric("Sensibilidad (Recall)",   f"{metrics.get('recall', 0.80)*100:.2f}%")
-
-# Obtener estado del ciclo de mantenimiento desde el API
-st.sidebar.markdown("---")
-st.sidebar.markdown("#### 🔧 Ciclo de Mantenimiento Continuo")
+st.sidebar.markdown("#### Mantenimiento Continuo")
 
 try:
     status_res = requests.get(f"{API_URL}/status", timeout=30)
@@ -116,7 +162,7 @@ try:
 
         if estado == "training":
             st.sidebar.markdown(
-                f"**Estado:** <span class='badge-training'>🔄 Reentrenando…</span>",
+                f"**Estado:** <span class='badge-training'>Reentrenando...</span>",
                 unsafe_allow_html=True
             )
             st.sidebar.markdown(
@@ -124,12 +170,12 @@ try:
                 unsafe_allow_html=True
             )
             st.sidebar.markdown(
-                "<div class='alert-box alert-warning'>⚙️ Reentrenamiento automático en progreso. El nuevo modelo se cargará en caliente al finalizar.</div>",
+                "<div class='alert-box alert-warning'>Reentrenamiento automático en progreso. El nuevo modelo se cargará en caliente al finalizar.</div>",
                 unsafe_allow_html=True
             )
         else:
             st.sidebar.markdown(
-                f"**Estado:** <span class='badge-idle'>✅ Activo</span>",
+                f"**Estado:** <span class='badge-idle'>Activo</span>",
                 unsafe_allow_html=True
             )
             st.sidebar.markdown(
@@ -151,7 +197,7 @@ except Exception as e:
 # FORMULARIO CLÍNICO
 # ─────────────────────────────────────────────
 st.markdown("---")
-st.markdown("#### 🩺 Ficha Epidemiológica Digital del Paciente")
+st.markdown("#### Ficha del Paciente")
 
 user_inputs = {}
 with st.form("clinical_form"):
@@ -168,7 +214,7 @@ with st.form("clinical_form"):
         elif feat['type'] == 'categorical':
             user_inputs[name] = target_col.selectbox(f"Indicador: {name}", options=feat['options'], index=feat['options'].index(feat['default']))
 
-    submit_btn = st.form_submit_button("🔴 ACCIONAR PREDICCIÓN CLÍNICA")
+    submit_btn = st.form_submit_button("Realizar Predicción")
 
 # ─────────────────────────────────────────────
 # PROCESAMIENTO DE RESPUESTA FASTAPI
@@ -180,25 +226,25 @@ if submit_btn:
             resultado = res.json()
             prob = resultado['probabilidad']
             
-            st.markdown("### 🧬 Resultado del Diagnóstico de Inferencia")
-            st.write(f"**Probabilidad de riesgo calculada:** `{prob * 100:.2f}%` (Prevalencia ajustada)")
+            st.markdown("### Resultado del Diagnóstico")
+            st.write(f"**Probabilidad de riesgo:** `{prob * 100:.2f}%`")
             st.progress(int(prob * 100))
             
             if resultado['alerta']:
                 st.markdown(
-                    "<div class='alert-box alert-danger'>🚨 ALTO RIESGO CORONARIO: El paciente requiere priorización diagnóstica inmediata debido a la presencia de multiplicadores de riesgo severos.</div>",
+                    "<div class='alert-box alert-danger'>ALTO RIESGO: El paciente requiere priorización diagnóstica.</div>",
                     unsafe_allow_html=True
                 )
             else:
                 st.markdown(
-                    "<div class='alert-box alert-success'>✅ EVALUACIÓN NORMAL: El paciente se encuentra dentro de los parámetros de riesgo aceptables para la ventana epidemiológica base.</div>",
+                    "<div class='alert-box alert-success'>EVALUACIÓN NORMAL: El paciente se encuentra dentro de los parámetros aceptables.</div>",
                     unsafe_allow_html=True
                 )
 
             # Notificación si esta consulta disparó el mantenimiento automático
             if resultado.get("mantenimiento_iniciado"):
                 st.markdown(
-                    "<div class='alert-box alert-info'>⚙️ ¡5 consultas completadas! El pipeline de <strong>Mantenimiento Continuo (CD)</strong> se ha activado automáticamente. El modelo se reentrenará en segundo plano.</div>",
+                    "<div class='alert-box alert-info'>Ciclo de mantenimiento iniciado (5 consultas). El modelo se actualizará en segundo plano.</div>",
                     unsafe_allow_html=True
                 )
                 # Rerun para actualizar el panel lateral inmediatamente
@@ -226,7 +272,7 @@ def check_maintenance_pipeline():
 
     if os.path.exists(nuevo_model) and os.path.exists(nuevo_scaler):
         st.markdown(
-            "<div class='alert-box alert-info'>🆕 [Pipeline CD] ¡Nuevo modelo detectado! Reemplazando artefactos en caliente…</div>",
+            "<div class='alert-box alert-info'>[Mantenimiento] Nuevo modelo detectado. Actualizando sistema...</div>",
             unsafe_allow_html=True
         )
         # Reemplazar artefactos de forma segura
@@ -239,11 +285,11 @@ def check_maintenance_pipeline():
         try:
             r = requests.post(f"{API_URL}/reload_model", timeout=30)
             if r.status_code == 200:
-                st.success("✅ [Pipeline CD] Microservicio actualizado. Nuevo modelo en producción en caliente.")
+                st.success("[Mantenimiento] Modelo actualizado exitosamente.")
             else:
-                st.warning("⚠️ El modelo fue reemplazado pero el API no respondió al reload. Reinicia FastAPI.")
+                st.warning("El modelo fue reemplazado pero el API no respondió.")
         except Exception as ex:
-            st.warning(f"⚠️ Artefactos copiados, pero no se pudo notificar al API: {ex}")
+            st.warning(f"Error al notificar actualización: {ex}")
 
         # Forzar recarga de la página para mostrar las nuevas métricas
         time.sleep(1)
