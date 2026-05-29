@@ -16,6 +16,7 @@ st.set_page_config(page_title="Clinifio", layout="centered")
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&display=swap');
 
 /* Global settings */
 html, body, [class*="css"] { 
@@ -37,12 +38,14 @@ html, body, [class*="css"] {
 
 /* Main Container / Glassmorphism Cards */
 .main-title { 
-    font-size: 2.5em; 
-    font-weight: 600; 
-    color: #657166; 
+    font-family: 'Poppins', sans-serif;
+    font-size: 3em; 
+    font-weight: 700; 
+    color: #99CDD8; 
     text-align: center;
-    margin-bottom: 20px;
-    letter-spacing: -0.5px;
+    margin-bottom: 25px;
+    letter-spacing: -1px;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.05);
 }
 
 .alert-box { 
@@ -135,7 +138,6 @@ html, body, [class*="css"] {
 """, unsafe_allow_html=True)
 
 st.markdown("<div class='main-title'>Clinifio 2.0</div>", unsafe_allow_html=True)
-st.write("Aplicación Web Médica. Grupo: **Jhon Clinton, Garen y Fiorela**.")
 
 # Carga dinámica de metadatos
 with open('features.json', 'r', encoding='utf-8') as f:
