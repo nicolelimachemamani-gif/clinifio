@@ -1,0 +1,12 @@
+[
+  {"name": "BMI", "type": "numeric", "min": 10, "max": 60, "default": 25},
+  {"name": "Smoking", "type": "categorical", "options": ["Yes", "No"], "default": "No"},
+  {"name": "AlcoholDrinking", "type": "categorical", "options": ["Yes", "No"], "default": "No"},
+  {"name": "Stroke", "type": "categorical", "options": ["Yes", "No"], "default": "No"},
+  {"name": "PhysicalHealth", "type": "numeric", "min": 0, "max": 30, "default": 0},
+  {"name": "MentalHealth", "type": "numeric", "min": 0, "max": 30, "default": 0},
+  {"name": "DiffWalking", "type": "categorical", "options": ["Yes", "No"], "default": "No"},
+  {"name": "Sex", "type": "categorical", "options": ["Male", "Female"], "default": "Female"},
+  {"name": "AgeCategory", "type": "categorical", "options": ["18-24", "25-29", "30-34", "35-39", "40-44", "45-49", "50-54", "55-59", "60-64", "65-69", "70-74", "75-79", "80 or older"], "default": "40-44"},
+  {"name": "GenHealth", "type": "categorical", "options": ["Excellent", "Very good", "Good", "Fair", "Poor"], "default": "Good"}
+]

@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg
+*.egg-info/
+dist/
+build/
+
+# Entornos virtuales
+venv/
+env/
+.venv/
+
+# Archivos de datos grandes — NO subir a GitHub (demasiado pesados)
+heart_2020_cleaned.csv
+heart_2020_cleaned1.csv
+
+# NOTA: model.pkl y scaler.pkl SÍ se suben porque Render los necesita al arrancar
+
+# Artefactos temporales de hot-swap (generados durante CD, no van al repo)
+nuevo_model.pkl
+nuevo_scaler.pkl
+nuevo_metrics.json
+
+# IDEs
+.vscode/settings.json
+.idea/
+*.swp
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
