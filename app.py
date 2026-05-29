@@ -202,19 +202,46 @@ st.markdown("---")
 st.markdown("#### Ficha del Paciente")
 
 user_inputs = {}
+
+# Diccionarios de traducción visual
+tr_opciones = {
+    "Yes": "Sí", "No": "No", "Male": "Masculino", "Female": "Femenino",
+    "Excellent": "Excelente", "Very good": "Muy Bueno", "Good": "Bueno",
+    "Fair": "Regular", "Poor": "Malo", "80 or older": "80 años o más"
+}
+
+tr_labels = {
+    "Smoking": "¿Fuma actualmente?",
+    "AlcoholDrinking": "¿Consume alcohol frecuente?",
+    "Stroke": "¿Ha tenido un ACV (Derrame)?",
+    "PhysicalHealth": "Días de mala salud física",
+    "MentalHealth": "Días de mala salud mental",
+    "DiffWalking": "¿Dificultad para caminar?",
+    "Sex": "Género del paciente",
+    "AgeCategory": "Rango de Edad",
+    "GenHealth": "Estado general de salud",
+    "BMI": "Índice de Masa Corporal (BMI)"
+}
+
 with st.form("clinical_form"):
     col1, col2 = st.columns(2)
     for idx, feat in enumerate(features_meta):
         target_col = col1 if idx % 2 == 0 else col2
         name = feat['name']
+        label_es = tr_labels.get(name, name)
         
         if feat['type'] == 'numeric':
             if name == 'BMI':
-                user_inputs[name] = target_col.slider("Índice de Masa Corporal (BMI)", float(feat['min']), float(feat['max']), float(feat['default']), 0.1)
+                user_inputs[name] = target_col.slider(label_es, float(feat['min']), float(feat['max']), float(feat['default']), 0.1)
             else:
-                user_inputs[name] = target_col.slider(f"Días con afección: {name}", int(feat['min']), int(feat['max']), int(feat['default']))
+                user_inputs[name] = target_col.slider(label_es, int(feat['min']), int(feat['max']), int(feat['default']))
         elif feat['type'] == 'categorical':
-            user_inputs[name] = target_col.selectbox(f"Indicador: {name}", options=feat['options'], index=feat['options'].index(feat['default']))
+            user_inputs[name] = target_col.selectbox(
+                label_es, 
+                options=feat['options'], 
+                index=feat['options'].index(feat['default']),
+                format_func=lambda x: tr_opciones.get(x, x.replace("-", " a ") + " años" if "-" in x else x)
+            )
 
     submit_btn = st.form_submit_button("Realizar Predicción")
 
