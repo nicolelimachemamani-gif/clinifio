@@ -104,7 +104,7 @@ st.sidebar.markdown("---")
 st.sidebar.markdown("#### 🔧 Ciclo de Mantenimiento Continuo")
 
 try:
-    status_res = requests.get(f"{API_URL}/status", timeout=3)
+    status_res = requests.get(f"{API_URL}/status", timeout=30)
     if status_res.status_code == 200:
         status_data = status_res.json()
         count     = status_data.get("count", 0)
@@ -145,7 +145,7 @@ try:
     else:
         st.sidebar.warning(f"API inaccesible. Status code: {status_res.status_code}")
 except Exception as e:
-    st.sidebar.warning(f"⚠️ Sin conexión al API en: {API_URL}")
+    st.sidebar.warning(f"⚠️ Sin conexión al API en: {API_URL} (Detalle: {e})")
 
 # ─────────────────────────────────────────────
 # FORMULARIO CLÍNICO
@@ -175,7 +175,7 @@ with st.form("clinical_form"):
 # ─────────────────────────────────────────────
 if submit_btn:
     try:
-        res = requests.post(f"{API_URL}/predict", json=user_inputs)
+        res = requests.post(f"{API_URL}/predict", json=user_inputs, timeout=30)
         if res.status_code == 200:
             resultado = res.json()
             prob = resultado['probabilidad']
@@ -237,7 +237,7 @@ def check_maintenance_pipeline():
 
         # Recargar el modelo en el microservicio FastAPI en caliente
         try:
-            r = requests.post(f"{API_URL}/reload_model", timeout=5)
+            r = requests.post(f"{API_URL}/reload_model", timeout=30)
             if r.status_code == 200:
                 st.success("✅ [Pipeline CD] Microservicio actualizado. Nuevo modelo en producción en caliente.")
             else:
