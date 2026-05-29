@@ -205,9 +205,9 @@ if submit_btn:
                 time.sleep(0.5)
                 st.rerun()
         else:
-            st.error("Error en la predicción. Verifica que el servidor de FastAPI esté respondiendo correctamente.")
+            st.error(f"Error {res.status_code} en la API: {res.text}")
     except Exception as e:
-        st.error(f"El microservicio de FastAPI está apagado o inaccesible. Asegúrate de ejecutar uvicorn primero. Detalle: {e}")
+        st.error(f"El microservicio en {API_URL} no responde. Detalle: {e}")
 
 # ─────────────────────────────────────────────
 # PIPELINE DE MANTENIMIENTO CONTINUO (CD) — HOT-SWAP
