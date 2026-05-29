@@ -97,6 +97,19 @@ def _increment_and_check():
             return False
 
 # ==========================================
+# ENDPOINT: RAIZ / HEALTH CHECK
+# ==========================================
+@app.get("/")
+def root():
+    """Endpoint raiz — health check para Render y proxies."""
+    return {
+        "app": "Clinifio API",
+        "version": "2.0",
+        "status": "online",
+        "endpoints": ["/predict", "/status", "/reload_model", "/docs"]
+    }
+
+# ==========================================
 # ENDPOINT: PREDICCIÓN CLÍNICA
 # ==========================================
 @app.post("/predict")
