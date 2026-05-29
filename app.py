@@ -8,7 +8,7 @@ import time
 # ── URL del microservicio FastAPI ──────────────────────────────────────────────
 # En producción (Render) se define la variable de entorno API_URL.
 # En desarrollo local, apunta a localhost.
-API_URL = os.environ.get("API_URL", "http://localhost:8000")
+API_URL = os.environ.get("API_URL", "http://localhost:8000").rstrip("/")
 
 st.set_page_config(page_title="Clinifio — Inferencia de Riesgo", page_icon="🩺", layout="centered")
 
