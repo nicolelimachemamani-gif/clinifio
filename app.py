@@ -143,9 +143,9 @@ try:
             delta=f"Faltan {restantes} para mantenimiento" if estado != "training" else "Reentrenando…"
         )
     else:
-        st.sidebar.warning("API inaccesible — estado no disponible.")
-except Exception:
-    st.sidebar.warning("⚠️ Sin conexión al API. Inicia FastAPI primero.")
+        st.sidebar.warning(f"API inaccesible. Status code: {status_res.status_code}")
+except Exception as e:
+    st.sidebar.warning(f"⚠️ Sin conexión al API en: {API_URL}")
 
 # ─────────────────────────────────────────────
 # FORMULARIO CLÍNICO
