@@ -308,7 +308,7 @@ if submit_btn:
             # Notificación si esta consulta disparó el mantenimiento automático
             if resultado.get("mantenimiento_iniciado"):
                 st.markdown(
-                    "<div class='alert-box alert-info'>Ciclo de mantenimiento iniciado (5 consultas). El modelo se actualizará en segundo plano.</div>",
+                    "<div class='alert-box alert-info'>Ciclo de mantenimiento iniciado (2 consultas). El modelo se actualizará en segundo plano.</div>",
                     unsafe_allow_html=True
                 )
                 # Rerun para actualizar el panel lateral inmediatamente
