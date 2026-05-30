@@ -6,9 +6,8 @@ import sys
 import os
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
-from sklearn.calibration import CalibratedClassifierCV
 from sklearn.metrics import (
-    accuracy_score, precision_score, recall_score, 
+    accuracy_score, precision_score, recall_score,
     f1_score, roc_auc_score, confusion_matrix
 )
 from xgboost import XGBClassifier
@@ -54,9 +53,12 @@ HEALTH_ORDER = ["Excellent", "Very good", "Good", "Fair", "Poor"]
 # PIPELINE DE PREPROCESAMIENTO CLÍNICO
 # ==========================================
 def preprocess_clinical_data(path_csv):
-    print("⏳ Cargando y limpiando conjunto de datos tabular masivo...")
+    print("[MLOps] Cargando muestra rapida del dataset...")
     df = pd.read_csv(path_csv)
     df = df.dropna(subset=[TARGET] + FEATURES)
+    # Muestra de 10,000 filas para reentrenamiento rapido en Render
+    if len(df) > 10000:
+        df = df.sample(n=10000, random_state=42)
     df_proc = df.copy()
     
     # Mapeo binario estándar (Yes=1, No=0)
@@ -97,21 +99,17 @@ X_test_scaled = scaler.transform(X_test)
 # ==========================================
 # ENTRENAMIENTO DE ESTIMADOR ALTO POTENCIAL
 # ==========================================
-print("🚀 Entrenando ensamble potente XGBoost...")
-base_model = XGBClassifier(
-    n_estimators=200,
-    max_depth=5,
-    learning_rate=0.05,
+print("[MLOps] Entrenando XGBoost rapido para demo...")
+calibrated_model = XGBClassifier(
+    n_estimators=50,
+    max_depth=4,
+    learning_rate=0.1,
     subsample=0.8,
     colsample_bytree=0.8,
     eval_metric="logloss",
     random_state=42,
     n_jobs=-1
 )
-
-# Calibración Isotónica para ajustar probabilidades reales para perfiles críticos
-print("⚖️ Calibrando probabilidades clínicas (Isotonic CV)...")
-calibrated_model = CalibratedClassifierCV(estimator=base_model, method="isotonic", cv=3)
 calibrated_model.fit(X_train_scaled, y_train)
 
 # ==========================================
@@ -130,9 +128,9 @@ metrics_report = {
     "fecha_despliegue": "2026-05-29"
 }
 
-print("\n📊 REPORTE TÉCNICO PARA EL JURADO:")
+print("[MLOps] REPORTE DE REENTRENAMIENTO:")
 print(json.dumps(metrics_report, indent=4))
-print("\n🧱 MATRIZ DE CONFUSIÓN:")
+print("[MLOps] MATRIZ DE CONFUSION:")
 print(confusion_matrix(y_test, y_pred))
 
 # ==========================================
