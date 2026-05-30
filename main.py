@@ -44,7 +44,7 @@ SCALER = joblib.load('scaler.pkl')
 # GESTIÓN DEL CONTADOR DE MANTENIMIENTO
 # ==========================================
 COUNTER_FILE = "query_counter.json"
-MAINTENANCE_THRESHOLD = 5  # Reentrenar cada 5 consultas
+MAINTENANCE_THRESHOLD = 2  # Reentrenar cada 2 consultas
 _counter_lock = threading.Lock()
 
 def _load_counter():
