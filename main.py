@@ -48,10 +48,13 @@ MAINTENANCE_THRESHOLD = 5  # Reentrenar cada 5 consultas
 _counter_lock = threading.Lock()
 
 def _load_counter():
-    """Carga el contador persistente desde disco."""
+    """Carga el contador persistente desde disco de forma segura."""
     if os.path.exists(COUNTER_FILE):
-        with open(COUNTER_FILE, 'r', encoding='utf-8') as f:
-            return json.load(f)
+        try:
+            with open(COUNTER_FILE, 'r', encoding='utf-8') as f:
+                return json.load(f)
+        except Exception as e:
+            print(f"[MLOps] Error al leer {COUNTER_FILE}: {e}. Reseteando contador.")
     return {"count": 0, "status": "idle"}
 
 def _save_counter(data: dict):
