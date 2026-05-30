@@ -56,9 +56,9 @@ def preprocess_clinical_data(path_csv):
     print("[MLOps] Cargando muestra rapida del dataset...")
     df = pd.read_csv(path_csv)
     df = df.dropna(subset=[TARGET] + FEATURES)
-    # Muestra de 10,000 filas para reentrenamiento rapido en Render
-    if len(df) > 10000:
-        df = df.sample(n=10000, random_state=42)
+    # Muestra de 2,000 filas para reentrenamiento ultra rapido en Render
+    if len(df) > 2000:
+        df = df.sample(n=2000, random_state=42)
     df_proc = df.copy()
     
     # Mapeo binario estándar (Yes=1, No=0)
@@ -101,12 +101,9 @@ X_test_scaled = scaler.transform(X_test)
 # ==========================================
 print("[MLOps] Entrenando XGBoost rapido para demo...")
 calibrated_model = XGBClassifier(
-    n_estimators=50,
-    max_depth=4,
+    n_estimators=20,
+    max_depth=3,
     learning_rate=0.1,
-    subsample=0.8,
-    colsample_bytree=0.8,
-    eval_metric="logloss",
     random_state=42,
     n_jobs=-1
 )
