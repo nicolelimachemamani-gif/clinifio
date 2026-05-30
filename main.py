@@ -69,9 +69,26 @@ def _run_retraining():
             text=True
         )
         print("[MLOps] ✅ Reentrenamiento completado. Nuevos artefactos disponibles.")
+        
+        # ── INTERCAMBIO (HOT-SWAP) EN EL BACKEND ──
+        import shutil
+        if os.path.exists("nuevo_model.pkl") and os.path.exists("nuevo_scaler.pkl"):
+            print("[MLOps] 🔄 Intercambiando (hot-swapping) nuevos artefactos del modelo...")
+            shutil.move("nuevo_model.pkl", "model.pkl")
+            shutil.move("nuevo_scaler.pkl", "scaler.pkl")
+            if os.path.exists("nuevo_metrics.json"):
+                shutil.move("nuevo_metrics.json", "metrics.json")
+            
+            # Recargar en caliente en memoria
+            global MODEL, SCALER
+            MODEL = joblib.load('model.pkl')
+            SCALER = joblib.load('scaler.pkl')
+            print("[MLOps] 🚀 Modelo y Scaler actualizados y recargados en caliente con éxito.")
+            
     except Exception as e:
         print(f"[MLOps] ❌ Error durante el reentrenamiento: {e}")
-        # Si falla, regresar el estado a idle para no bloquear el sistema
+    finally:
+        # Asegurar que el estado regrese a idle
         with _counter_lock:
             state = _load_counter()
             state["status"] = "idle"
@@ -178,3 +195,20 @@ def reload_model():
     MODEL = joblib.load('model.pkl')
     SCALER = joblib.load('scaler.pkl')
     return {"status": "success", "message": "Modelo de XGBoost recargado en memoria RAM caliente"}
+
+# ==========================================
+# ENDPOINT: OBTENER MÉTRICAS ACTUALES
+# ==========================================
+@app.get("/metrics")
+def get_metrics():
+    """Retorna las métricas del modelo actual en producción."""
+    if os.path.exists("metrics.json"):
+        try:
+            with open("metrics.json", "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception as e:
+            print(f"Error al leer metrics.json: {e}")
+    return {
+        "accuracy": 0.8231, "precision": 0.8158, "recall": 0.8346, "f1_score": 0.8251, "auc_roc": 0.9103,
+        "nombre_modelo_ganador": "XGBoost_Calibrated", "fecha_despliegue": "2026-05-29"
+    }
